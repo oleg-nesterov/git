@@ -1356,15 +1356,19 @@ static int match_funcname(struct grep_opt *opt, struct grep_source *gs,
 static void show_funcname_line(struct grep_opt *opt, struct grep_source *gs,
 			       const char *bol, unsigned lno)
 {
+	unsigned long left = bol - gs->buf;
+
+	if (match_funcname(opt, gs, bol, end_of_line(bol, &left)))
+		return;
+
 	while (bol > gs->buf) {
 		const char *eol = --bol;
 
+		if (--lno < opt->last_shown)
+			break;
+
 		while (bol > gs->buf && bol[-1] != '\n')
 			bol--;
-		lno--;
-
-		if (lno <= opt->last_shown)
-			break;
 
 		if (match_funcname(opt, gs, bol, eol)) {
 			show_line(opt, bol, eol, gs->name, lno, 0, '=');
