@@ -90,8 +90,13 @@ PATTERNS("bibtex",
 PATTERNS("cpp",
 	 /* Jump targets or access declarations */
 	 "!^[ \t]*[A-Za-z_][A-Za-z_0-9]*:[[:space:]]*($|/[/*])\n"
-	 /* functions/methods, variables, and compounds at top level */
-	 "^((::[[:space:]]*)?[A-Za-z_].*)$",
+
+	 "("
+		/* functions/methods, variables, and compounds at top level */
+		"^((::[[:space:]]*)?[A-Za-z_].*)$"
+	 "|"
+		"^[ \t]*#[ \t]*define"
+	 ")",
 	 /* -- */
 	 /* identifiers and keywords */
 	 "[a-zA-Z_][a-zA-Z0-9_]*"
